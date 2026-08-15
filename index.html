@@ -336,6 +336,13 @@ footer{background:#031129;color:#899bb4;padding:27px 0;font-size:9px;margin-top:
 .city-empty{padding:28px 0;color:#7c8999;font-size:11px}
 .city-row{min-height:56px}
 </style>
+
+<style id="v112-fixes">
+.tab{display:none}
+.tab.active{display:block}
+.rank-row{width:100%;border:0;background:transparent;padding:0;cursor:pointer;text-align:left;font:inherit}
+.rank-row:hover b{color:#c99732}
+</style>
 </head><body>
 <header><div class="wrap top"><a class="brand" href="#"><img src="assets/astrion.png" alt="Astrion Assessoria"></a><div class="tabs"><button class="active" data-tab="consolidado">Consolidado</button><button data-tab="b2b">B2B</button><button data-tab="b2b2c">B2B2C</button></div><button class="print" onclick="window.print()">Imprimir / PDF</button></div></header>
 <div class="hero"><div class="wrap hero-grid hero-grid-single">
@@ -974,4 +981,104 @@ if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded"
   }
 })();
 </script>
+
+<script id="v112-controller">
+(function(){
+"use strict";
+
+const CITY_BR = [
+ ["SÃO PAULO / SP",1532],["RIO DE JANEIRO / RJ",624],["BELO HORIZONTE / MG",438],
+ ["CURITIBA / PR",397],["PORTO ALEGRE / RS",326],["BRASÍLIA / DF",293],
+ ["FORTALEZA / CE",241],["SALVADOR / BA",228],["RECIFE / PE",214],["CAMPINAS / SP",131]
+];
+
+function nfmt(v){return Number(v||0).toLocaleString("pt-BR");}
+
+function paintCities(items,total){
+ const box=document.getElementById("cityList");
+ if(!box)return;
+ const rows=Array.isArray(items)?items:[];
+ const denom=Number(total)||16000;
+ const max=Math.max(1,...rows.map(r=>Number(r[1])||0));
+ box.innerHTML=rows.map((r,i)=>{
+   const v=Number(r[1])||0, pct=v/denom*100;
+   return `<div class="city-row">
+    <div class="city-rank">${i+1}</div>
+    <div class="city-main"><b>${r[0]}</b><div class="city-track"><div class="city-fill" style="width:${Math.max(2,v/max*100)}%"></div></div></div>
+    <strong>${nfmt(v)}</strong><span>${pct.toFixed(1).replace(".",",")}%</span>
+   </div>`;
+ }).join("");
+}
+
+function paintRank(){
+ const rank=document.getElementById("rank");
+ if(!rank || typeof stateData==="undefined")return;
+ const rows=Object.entries(stateData).sort((a,b)=>b[1].total-a[1].total).slice(0,10);
+ const max=rows[0]?.[1]?.total||1;
+ rank.innerHTML=rows.map(([uf,d])=>`<button class="rank-row" type="button" data-rank-uf="${uf}">
+   <b>${uf}</b><i><em style="width:${d.total/max*100}%"></em></i><span>${nfmt(d.total)}</span>
+ </button>`).join("");
+ rank.querySelectorAll("[data-rank-uf]").forEach(b=>b.onclick=()=>choose(b.dataset.rankUf));
+}
+
+function choose(uf){
+ document.querySelectorAll("#astrionBrazilMap .astrion-state").forEach(el=>el.classList.toggle("selected",!!uf&&el.dataset.uf===uf));
+ const label=document.getElementById("stateLabel"), total=document.getElementById("stateTotal"),
+       share=document.getElementById("stateShare"), title=document.getElementById("citiesTitle");
+ if(!uf){
+   if(label)label.textContent="BRASIL";
+   if(total)total.textContent="16.000";
+   if(share)share.textContent="100% da rede potencial";
+   if(title)title.textContent="Principais municípios · Brasil";
+   paintCities(CITY_BR,16000);
+   paintRank();
+   return;
+ }
+ if(typeof stateData==="undefined" || !stateData[uf])return;
+ const d=stateData[uf];
+ if(label)label.textContent=(typeof names!=="undefined"&&names[uf]?names[uf]:uf)+" · "+uf;
+ if(total)total.textContent=nfmt(d.total);
+ if(share)share.textContent=(d.total/16000*100).toFixed(1).replace(".",",")+"% da rede potencial";
+ if(title)title.textContent="Principais municípios · "+uf;
+ paintCities((d.cities||[]).map(x=>[x[0]+" / "+uf,x[1]]),d.total);
+ if(typeof renderActivities==="function")try{renderActivities(d.activities)}catch(_){}
+}
+
+function activateTab(id){
+ document.querySelectorAll(".tab").forEach(t=>{
+   const active=t.id===id;
+   t.classList.toggle("active",active);
+   t.style.display=active?"block":"none";
+ });
+ document.querySelectorAll("[data-tab]").forEach(b=>b.classList.toggle("active",b.dataset.tab===id));
+ window.scrollTo({top:0,behavior:"smooth"});
+ if(id==="b2b2c")setTimeout(()=>choose(null),0);
+}
+
+function boot(){
+ // Tabs: direct binding, independent of all legacy handlers.
+ document.querySelectorAll("[data-tab]").forEach(btn=>{
+   btn.onclick=function(e){e.preventDefault();e.stopImmediatePropagation();activateTab(this.dataset.tab);return false;};
+ });
+
+ // Map state interaction.
+ document.querySelectorAll("#astrionBrazilMap .astrion-state").forEach(el=>{
+   el.onclick=function(e){e.preventDefault();e.stopImmediatePropagation();choose(this.dataset.uf);return false;};
+ });
+
+ // Reset.
+ const reset=document.getElementById("resetMap");
+ if(reset)reset.onclick=function(e){e.preventDefault();e.stopImmediatePropagation();choose(null);return false;};
+
+ // Ensure initial tab and national municipalities are actually rendered.
+ const active=document.querySelector("[data-tab].active");
+ activateTab(active?.dataset.tab || "consolidado");
+ paintCities(CITY_BR,16000);
+ paintRank();
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});
+else boot();
+})();
+</script>
+
 </body></html>
