@@ -343,6 +343,44 @@ footer{background:#031129;color:#899bb4;padding:27px 0;font-size:9px;margin-top:
 .rank-row{width:100%;border:0;background:transparent;padding:0;cursor:pointer;text-align:left;font:inherit}
 .rank-row:hover b{color:#c99732}
 </style>
+
+<style id="v113-uf-ranking">
+.uf-ranking-card{
+ margin-top:12px;
+ background:#fff;
+ border:1px solid #dbe3ec;
+ border-radius:18px;
+ padding:16px 16px 12px;
+ box-shadow:0 8px 22px rgba(6,26,59,.045);
+}
+.uf-ranking-head{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:10px}
+.uf-ranking-head span{font-size:8px;letter-spacing:.09em;font-weight:900;color:#061a3b}
+.uf-ranking-head small{font-size:7px;color:#8b97a7}
+.uf-ranking{display:flex;flex-direction:column}
+.uf-rank-line{
+ display:grid;grid-template-columns:28px minmax(0,1fr);gap:8px;align-items:center;
+ width:100%;border:0;border-top:1px solid #eef1f5;background:transparent;padding:8px 0;
+ cursor:pointer;text-align:left;font:inherit
+}
+.uf-rank-line:first-child{border-top:0}
+.uf-rank-line b{font-size:9px;color:#061a3b}
+.uf-rank-data{min-width:0}
+.uf-rank-track{height:5px;background:#edf1f5;border-radius:99px;overflow:hidden}
+.uf-rank-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#c99732,#0b326d)}
+.uf-rank-values{display:flex;justify-content:space-between;align-items:center;margin-top:4px}
+.uf-rank-values strong{font-size:8px;color:#32465f}
+.uf-rank-values span{font-size:7px;color:#8491a2}
+.uf-rank-line:hover{background:#fafbfd}
+.uf-rank-line:hover b{color:#c08b24}
+.uf-rank-line.selected{background:#f5f8fc}
+.uf-rank-line.selected b{color:#c08b24}
+.uf-rank-line.selected .uf-rank-track{outline:1px solid rgba(201,151,50,.3)}
+/* eliminate any accidental loose preserved text block above map */
+#b2b2c > .preserved-inline,.preserved-inline{display:none!important}
+@media(max-width:1000px){
+ .uf-ranking-card{margin-bottom:8px}
+}
+</style>
 </head><body>
 <header><div class="wrap top"><a class="brand" href="#"><img src="assets/astrion.png" alt="Astrion Assessoria"></a><div class="tabs"><button class="active" data-tab="consolidado">Consolidado</button><button data-tab="b2b">B2B</button><button data-tab="b2b2c">B2B2C</button></div><button class="print" onclick="window.print()">Imprimir / PDF</button></div></header>
 <div class="hero"><div class="wrap hero-grid hero-grid-single">
@@ -566,7 +604,7 @@ footer{background:#031129;color:#899bb4;padding:27px 0;font-size:9px;margin-top:
 <div class="step future"><strong>—</strong><span>Ativos</span></div>
 <div class="step future"><strong>—</strong><span>Produzindo</span></div>
 </div>
-<div class="expansion-strip"><div><small>POTENCIAL PRESERVADO PARA PRÓXIMA ONDA</small><strong>15.810 leads</strong></div><p>Aguardando alinhamento comercial com a EZZE antes de avançarmos com novas abordagens.</p></div>
+<div class="expansion-strip"><div></div>
 <div class="dash">
   <div class="panel map-panel">
   <h3>Mapa da rede potencial</h3>
@@ -580,6 +618,13 @@ footer{background:#031129;color:#899bb4;padding:27px 0;font-size:9px;margin-top:
     <div class="state-side">
       <div class="state-head"><small id="stateLabel">BRASIL</small><strong id="stateTotal">16.000</strong><span id="stateShare">100% da rede potencial</span></div>
       <button class="reset-map" id="resetMap">Ver Brasil</button>
+        <div class="uf-ranking-card">
+          <div class="uf-ranking-head">
+            <span>DISTRIBUIÇÃO POR UF</span>
+            <small>Clique em uma linha para filtrar</small>
+          </div>
+          <div id="ufRanking" class="uf-ranking"></div>
+        </div>
       <div class="rank" id="stateRank"></div>
     </div>
   </div>
@@ -1023,6 +1068,7 @@ function paintRank(){
 
 function choose(uf){
  document.querySelectorAll("#astrionBrazilMap .astrion-state").forEach(el=>el.classList.toggle("selected",!!uf&&el.dataset.uf===uf));
+ document.querySelectorAll("[data-ufline]").forEach(el=>el.classList.toggle("selected",!!uf&&el.dataset.ufline===uf));
  const label=document.getElementById("stateLabel"), total=document.getElementById("stateTotal"),
        share=document.getElementById("stateShare"), title=document.getElementById("citiesTitle");
  if(!uf){
@@ -1032,6 +1078,7 @@ function choose(uf){
    if(title)title.textContent="Principais municípios · Brasil";
    paintCities(CITY_BR,16000);
    paintRank();
+   paintUfRanking();
    return;
  }
  if(typeof stateData==="undefined" || !stateData[uf])return;
@@ -1042,6 +1089,27 @@ function choose(uf){
  if(title)title.textContent="Principais municípios · "+uf;
  paintCities((d.cities||[]).map(x=>[x[0]+" / "+uf,x[1]]),d.total);
  if(typeof renderActivities==="function")try{renderActivities(d.activities)}catch(_){}
+}
+
+
+function paintUfRanking(){
+ const box=document.getElementById("ufRanking");
+ if(!box || typeof stateData==="undefined")return;
+ const rows=Object.entries(stateData).sort((a,b)=>b[1].total-a[1].total).slice(0,10);
+ const max=rows[0]?.[1]?.total||1;
+ box.innerHTML=rows.map(([uf,d],i)=>{
+   const pct=d.total/16000*100;
+   return `<button type="button" class="uf-rank-line" data-ufline="${uf}">
+     <b>${uf}</b>
+     <div class="uf-rank-data">
+       <div class="uf-rank-track"><div class="uf-rank-fill" style="width:${d.total/max*100}%"></div></div>
+       <div class="uf-rank-values"><strong>${nfmt(d.total)}</strong><span>${pct.toFixed(1).replace(".",",")}%</span></div>
+     </div>
+   </button>`;
+ }).join("");
+ box.querySelectorAll("[data-ufline]").forEach(btn=>{
+   btn.onclick=function(e){e.preventDefault();e.stopPropagation();choose(this.dataset.ufline);return false;};
+ });
 }
 
 function activateTab(id){
@@ -1075,6 +1143,7 @@ function boot(){
  activateTab(active?.dataset.tab || "consolidado");
  paintCities(CITY_BR,16000);
  paintRank();
+ paintUfRanking();
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});
 else boot();
