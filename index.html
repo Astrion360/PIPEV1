@@ -330,6 +330,12 @@ footer{background:#031129;color:#899bb4;padding:27px 0;font-size:9px;margin-top:
 .astrion-vector-map{background:radial-gradient(circle at 48% 42%,#fff 0,#f3f7fb 67%,#eaf0f6 100%)!important}
 @media(max-width:700px){.map-stage{width:100%}}
 </style>
+
+<style id="v111-city-fix">
+#cityList{min-height:360px}
+.city-empty{padding:28px 0;color:#7c8999;font-size:11px}
+.city-row{min-height:56px}
+</style>
 </head><body>
 <header><div class="wrap top"><a class="brand" href="#"><img src="assets/astrion.png" alt="Astrion Assessoria"></a><div class="tabs"><button class="active" data-tab="consolidado">Consolidado</button><button data-tab="b2b">B2B</button><button data-tab="b2b2c">B2B2C</button></div><button class="print" onclick="window.print()">Imprimir / PDF</button></div></header>
 <div class="hero"><div class="wrap hero-grid hero-grid-single">
@@ -805,22 +811,48 @@ function renderRank(){
  document.querySelectorAll(".rank-row").forEach(r=>r.onclick=()=>selectState(r.dataset.uf));
 }
 function renderList(items,total){
- const denom=total||16000;
- const max=items.length?Math.max(...items.map(x=>x[1])):1;
- document.getElementById("cityList").innerHTML=items.map(([n,v],i)=>{
-   const pct=v/denom*100;
-   return `<div class="city-row">
-     <div class="city-rank">${i+1}</div>
-     <div class="city-main"><b>${n}</b><div class="city-track"><div class="city-fill" style="width:${v/max*100}%"></div></div></div>
-     <strong>${fmt(v)}</strong>
-     <span>${pct.toFixed(1).replace(".",",")}%</span>
-   </div>`;
- }).join("");
+  const box=document.getElementById("cityList");
+  if(!box)return;
+  const rows=Array.isArray(items)?items:[];
+  if(!rows.length){
+    box.innerHTML='<div class="city-empty">Nenhum município disponível para esta seleção.</div>';
+    return;
+  }
+  const denom=Number(total)||16000;
+  const max=Math.max(...rows.map(x=>Number(x[1])||0),1);
+  box.innerHTML=rows.map((x,i)=>{
+    const n=String(x[0]??"");
+    const v=Number(x[1])||0;
+    const pct=(v/denom)*100;
+    return `<div class="city-row">
+      <div class="city-rank">${i+1}</div>
+      <div class="city-main">
+        <b>${n}</b>
+        <div class="city-track"><div class="city-fill" style="width:${Math.max(2,(v/max)*100)}%"></div></div>
+      </div>
+      <strong>${fmt(v)}</strong>
+      <span>${pct.toFixed(1).replace(".",",")}%</span>
+    </div>`;
+  }).join("");
 }
 function renderActivities(items){
  const data=items&&items.length?items:nationalActivities; const max=Math.max(...data.map(x=>x[1]));
  document.getElementById("activityBars").innerHTML=data.map(([n,v])=>`<div class="profile-line"><label>${n}</label><strong>${fmt(v)}</strong><div class="track"><div class="fill" style="width:${v/max*100}%"></div></div></div>`).join("");
 }
+
+const nationalCitiesSafe = [
+ ["SÃO PAULO / SP",1532],
+ ["RIO DE JANEIRO / RJ",624],
+ ["BELO HORIZONTE / MG",438],
+ ["CURITIBA / PR",397],
+ ["PORTO ALEGRE / RS",326],
+ ["BRASÍLIA / DF",293],
+ ["FORTALEZA / CE",241],
+ ["SALVADOR / BA",228],
+ ["RECIFE / PE",214],
+ ["CAMPINAS / SP",131]
+];
+
 function selectState(uf){
  document.querySelectorAll("#brMapMount .state").forEach(el=>{
    const elUf=el.id.replace("state_","").toUpperCase();
@@ -833,7 +865,7 @@ function selectState(uf){
    document.getElementById("stateTotal").textContent="16.000";
    document.getElementById("stateShare").textContent="100% da rede potencial";
    document.getElementById("citiesTitle").textContent="Principais municípios · Brasil";
-   renderList(nationalCities,16000);
+   renderList(nationalCitiesSafe,16000);
    renderActivities(nationalActivities);
    renderRank();
    return;
@@ -846,7 +878,7 @@ function selectState(uf){
  renderList(d.cities.map(x=>[x[0]+" / "+uf,x[1]]),d.total);
  renderActivities(d.activities);
 }
-renderRank(); renderList(nationalCities,16000); renderActivities(nationalActivities);
+renderRank(); renderList(nationalCitiesSafe,16000); renderActivities(nationalActivities);
 
 function topoToPaths(topology){
  const tr=topology.transform, arcs=topology.arcs;
@@ -911,7 +943,7 @@ if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded"
     if(share) share.textContent="100% da rede potencial";
     if(title) title.textContent="Principais municípios · Brasil";
     if(tip){tip.style.opacity=0;tip.innerHTML="";}
-    if(typeof renderList==="function" && typeof nationalCities!=="undefined") renderList(nationalCities,16000);
+    if(typeof renderList==="function" && typeof nationalCities!=="undefined") renderList(nationalCitiesSafe,16000);
     if(typeof renderActivities==="function" && typeof nationalActivities!=="undefined") renderActivities(nationalActivities);
     if(typeof renderRank==="function") renderRank();
   }
@@ -921,6 +953,25 @@ if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded"
     b.addEventListener("click",function(e){e.preventDefault();e.stopImmediatePropagation();hardReset();},true);
   }
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",bind,{once:true}); else bind();
+})();
+</script>
+
+<script id="v111-city-init">
+(function(){
+  function initNationalCities(){
+    try{
+      if(typeof renderList==="function" && typeof nationalCitiesSafe!=="undefined"){
+        renderList(nationalCitiesSafe,16000);
+      }
+      var title=document.getElementById("citiesTitle");
+      if(title && !title.textContent.trim()) title.textContent="Principais municípios · Brasil";
+    }catch(e){console.warn("Falha ao iniciar municípios nacionais",e);}
+  }
+  if(document.readyState==="loading"){
+    document.addEventListener("DOMContentLoaded",initNationalCities,{once:true});
+  }else{
+    initNationalCities();
+  }
 })();
 </script>
 </body></html>
