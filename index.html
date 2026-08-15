@@ -17,6 +17,71 @@ footer{background:#031129;color:#899bb4;padding:27px 0;font-size:9px;margin-top:
 @media(max-width:1100px){.hero-grid,.dash{grid-template-columns:1fr}.cards{grid-template-columns:repeat(2,1fr)}.b2b-summary{grid-template-columns:repeat(2,1fr)}.funnel{grid-template-columns:repeat(4,1fr)}.map-grid{grid-template-columns:1fr}.state-side{display:grid;grid-template-columns:1fr 1fr}.exec-grid{grid-template-columns:1fr}}
 @media(max-width:720px){.wrap{width:calc(100% - 28px)}.top{height:auto;padding:10px 0;align-items:flex-start;flex-direction:column}.brand img{width:125px;height:50px}.tabs{width:100%;overflow:auto}.print{display:none}.hero-grid{min-height:auto;padding:50px 0;gap:32px}.hero-side,.motor-grid,.cards,.b2b-summary,.detail-grid,.segment-grid{grid-template-columns:1fr}.exec-numbers{grid-template-columns:1fr 1fr}.funnel{grid-template-columns:repeat(2,1fr)}section.content{padding:52px 0}.section-head{display:block}.section-copy{margin-top:12px}.map-shell{min-height:430px}.map-shell svg{height:410px}.state-side{grid-template-columns:1fr}.company-card{min-height:315px}}
 @media print{header{display:none}.tab{display:block!important;break-before:page}.hero{break-after:page}.state-path{print-color-adjust:exact}.company-card,.panel,.exec-card,.motors{break-inside:avoid}}
+</style>
+<style>
+/* V1.5 — B2B exact stats */
+.b2b-stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:28px}
+.b2b-stat{background:#fff;border:1px solid var(--line);border-radius:19px;padding:19px 20px;box-shadow:0 8px 24px rgba(6,26,59,.045);min-height:116px}
+.b2b-stat span{display:block;font-size:8px;letter-spacing:.08em;text-transform:uppercase;font-weight:900;color:#748398}
+.b2b-stat strong{display:block;color:var(--navy);font-size:clamp(20px,2vw,29px);letter-spacing:-.035em;margin:7px 0 4px;line-height:1.05;overflow-wrap:anywhere}
+.b2b-stat small{font-size:9px;color:#8190a2;line-height:1.4}
+.b2b-stat.highlight{background:linear-gradient(145deg,#071d42,#0b326d);border-color:#0b326d}
+.b2b-stat.highlight span,.b2b-stat.highlight small{color:#cbd6e4}.b2b-stat.highlight strong{color:#fff}
+.company-card{min-height:500px}
+.exact-metrics{grid-template-columns:1fr 1fr}
+.exact-metrics .metric-wide{grid-column:1/-1}
+.exact-metrics .metric-wide strong{font-size:13px}
+.exact-metrics .fee-stat{background:linear-gradient(100deg,#fff8e8,#f6f7fa)}
+.exact-metrics .fee-stat strong{color:#8a6218}
+.company-metrics div{min-width:0}.company-metrics strong{overflow-wrap:anywhere}
+
+/* V1.5 — mapa real do Brasil com interação local */
+.map-panel{overflow:visible}
+.real-map-shell{position:relative;min-height:540px;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 48% 42%,#f9fbfd 0,#fff 68%);border-radius:20px;overflow:hidden}
+.real-map-image{display:block;width:min(100%,650px);height:auto;object-fit:contain;filter:drop-shadow(0 12px 22px rgba(6,26,59,.08))}
+.map-hotspots{position:absolute;inset:0;margin:auto;width:min(100%,650px);height:100%;max-height:540px}
+.map-hotspot{position:absolute;transform:translate(-50%,-50%);width:29px;height:24px;border:1px solid rgba(255,255,255,.9);border-radius:8px;background:rgba(12,78,135,calc(.16 + var(--heat)*.52));color:#fff;font-size:8px;font-weight:950;letter-spacing:.02em;cursor:pointer;box-shadow:0 3px 9px rgba(6,26,59,.12);transition:.16s;z-index:3;padding:0}
+.map-hotspot:hover{transform:translate(-50%,-50%) scale(1.15);background:#c99732;color:#061a3b;z-index:5}
+.map-hotspot.selected{background:#061a3b;color:#fff;border-color:#e1b858;outline:4px solid rgba(201,151,50,.2);transform:translate(-50%,-50%) scale(1.13);z-index:6}
+.reset-map{border:1px solid #dce4ed;background:#fff;color:#516278;border-radius:12px;padding:9px 12px;font-size:9px;font-weight:850;cursor:pointer;text-transform:uppercase;letter-spacing:.06em}
+.reset-map:hover{border-color:#c99732;color:#061a3b}
+.map-source-note{font-size:9px;color:#8a96a5;line-height:1.45;margin:12px 0 0}
+.map-tooltip{z-index:20}
+@media(max-width:1180px){
+ .b2b-stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .real-map-shell{min-height:500px}
+}
+@media(max-width:720px){
+ .b2b-stats-grid{grid-template-columns:1fr}
+ .company-card{min-height:auto}
+ .exact-metrics{grid-template-columns:1fr 1fr}
+ .real-map-shell{min-height:390px}
+ .real-map-image{width:min(100%,470px)}
+ .map-hotspots{width:min(100%,470px);max-height:390px}
+ .map-hotspot{width:25px;height:21px;font-size:7px;border-radius:7px}
+}
+@media(max-width:460px){
+ .exact-metrics{grid-template-columns:1fr}
+ .exact-metrics .metric-wide{grid-column:auto}
+ .real-map-shell{min-height:330px}
+ .map-hotspots{max-height:330px}
+}
+</style>
+<style>
+.hero-grid-single{grid-template-columns:1fr;min-height:300px;max-width:1100px}
+.hero-grid-single h1{max-width:none}
+.lead-origin{background:linear-gradient(145deg,#071d42,#0b326d);color:#fff;border-radius:24px;padding:26px 28px;margin-top:20px}
+.lead-origin small{display:block;color:#e4bf68;font-size:9px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+.lead-origin h3{margin:0 0 8px;font-size:20px}
+.lead-origin p{margin:0;color:#ced9e7;font-size:12px;line-height:1.65;max-width:1050px}
+.map-note{font-size:10px;color:#748296;line-height:1.5;margin-top:12px}
+</style><style>
+.company-card{min-height:430px}
+.company-metrics{grid-template-columns:1fr 1fr}
+.company-metrics .metric-wide{grid-column:1/-1;background:linear-gradient(100deg,#f7f3e9,#f3f6f9)}
+.company-metrics .metric-wide strong{color:#8a6218}
+.ste-logo{height:86px}.ste-mark{display:flex;align-items:center;gap:12px;color:#061a3b}.ste-mark b{font-size:30px;letter-spacing:-.06em;border-right:2px solid #c99732;padding-right:12px}.ste-mark span{font-size:9px;font-weight:850;line-height:1.3;text-transform:uppercase;letter-spacing:.04em}
+@media(max-width:720px){.company-card{min-height:auto}.company-metrics{grid-template-columns:1fr 1fr}.company-metrics .metric-wide{grid-column:1/-1}}
 </style></head><body>
 <header><div class="wrap top"><a class="brand" href="#"><img src="assets/astrion.png" alt="Astrion Assessoria"></a><div class="tabs"><button class="active" data-tab="consolidado">Consolidado</button><button data-tab="b2b">B2B</button><button data-tab="b2b2c">B2B2C</button></div><button class="print" onclick="window.print()">Imprimir / PDF</button></div></header>
 <div class="hero"><div class="wrap hero-grid hero-grid-single">
@@ -38,163 +103,184 @@ footer{background:#031129;color:#899bb4;padding:27px 0;font-size:9px;margin-top:
 
 <section id="b2b" class="tab content"><div class="wrap">
  <div class="section-head"><div><div class="eyebrow" style="color:var(--gold)">Canal B2B</div><h2>Potencial comercial por parceiro.</h2></div><p class="section-copy">Cenário comercial por parceiro, considerando capacidade de 250 clientes por operador, limite de 50 operadores, conversão de 1,5% e ticket médio de aproximadamente R$ 95 mil.</p></div>
- <div class="b2b-summary"><div class="mini"><span>Oportunidades</span><strong>12</strong></div><div class="mini"><span>Base potencial</span><strong>177,0 mi</strong></div><div class="mini"><span>Produção potencial / mês</span><strong>R$ 203,27 mi</strong></div><div class="mini"><span>17% sobre produção</span><strong>R$ 34,56 mi</strong></div></div>
- <div class="cards"><a class="company-card" href="https://pagbank.com.br" target="_blank" rel="noopener">
+ <div class="b2b-stats-grid">
+  <div class="b2b-stat"><span>Oportunidades B2B</span><strong>12</strong><small>empresas em negociação</small></div>
+  <div class="b2b-stat"><span>Faturamento 12/2025</span><strong>R$ 261,9 bi</strong><small>soma indicativa das oportunidades</small></div>
+  <div class="b2b-stat"><span>Clientes ativos</span><strong>177.007.331</strong><small>base potencial combinada</small></div>
+  <div class="b2b-stat"><span>Clientes tratados / mês</span><strong>142.283</strong><small>cenário inicial consolidado</small></div>
+  <div class="b2b-stat"><span>Conversões / mês</span><strong>2.136</strong><small>premissa de conversão de 1,5%</small></div>
+  <div class="b2b-stat"><span>Operadores necessários</span><strong>568</strong><small>250 clientes por operador/mês</small></div>
+  <div class="b2b-stat highlight"><span>Produção esperada / mês</span><strong>R$ 203.271.739,38</strong><small>ticket médio conforme premissa comercial</small></div>
+  <div class="b2b-stat highlight"><span>Produção × 17%</span><strong>R$ 34.556.195,70</strong><small>TX ADM média utilizada no cenário</small></div>
+</div>
+<div class="cards"><a class="company-card" href="https://pagbank.com.br" target="_blank" rel="noopener">
       <div class="company-logo"><img src="assets/pagbank.png" alt="PagBank"></div>
       <div class="company-title"><span>PagBank</span><small>Em negociação <b>↗</b></small></div>
-      <div class="company-metrics">
-<div><span>Faturamento 12/2025</span><strong>R$ 20,4 bi</strong></div>
-<div><span>Base ativa estimada</span><strong>33 mi</strong></div>
-<div><span>Base tratada / mês</span><strong>12.540</strong></div>
-<div><span>Conversões · 1,5%</span><strong>188</strong></div>
-<div><span>Operadores necessários</span><strong>50</strong></div>
-<div><span>Produção esperada / mês</span><strong>R$ 17,92 mi</strong></div>
-<div class="metric-wide"><span>17% sobre produção</span><strong>R$ 3,05 mi</strong></div>
-</div>
-<div class="share"><span>% da base tratada ao mês</span><b>0,04%</b></div>
+      <div class="company-metrics exact-metrics">
+      <div><span>Faturamento 12/2025</span><strong>R$ 20,4 bi</strong></div>
+      <div><span>Clientes ativos</span><strong>33.000.000</strong></div>
+      <div><span>% tratados / mês</span><strong>0,04%</strong></div>
+      <div><span>Clientes tratados / mês</span><strong>12.540</strong></div>
+      <div><span>Conversões · 1,5%</span><strong>188</strong></div>
+      <div><span>Operadores · 250/mês</span><strong>50</strong></div>
+      <div class="metric-wide"><span>Produção esperada / mês</span><strong>R$ 17.915.208,30</strong></div>
+      <div class="metric-wide fee-stat"><span>Produção × TX ADM média 17%</span><strong>R$ 3.045.585,41</strong></div>
+    </div>
+<div class="share"><span>Cenário individual do parceiro</span><b>Base 12/2025</b></div>
     </a><a class="company-card" href="https://www.bib.com.br" target="_blank" rel="noopener">
       <div class="company-logo logo-bib"><img src="assets/banco-industrial-do-brasil.png" alt="Banco Industrial do Brasil"></div>
       <div class="company-title"><span>Banco Industrial do Brasil</span><small>Em negociação <b>↗</b></small></div>
-      <div class="company-metrics">
-<div><span>Faturamento 12/2025</span><strong>R$ 1,5 bi</strong></div>
-<div><span>Base ativa estimada</span><strong>92 mil</strong></div>
-<div><span>Base tratada / mês</span><strong>4.600</strong></div>
-<div><span>Conversões · 1,5%</span><strong>69</strong></div>
-<div><span>Operadores necessários</span><strong>18</strong></div>
-<div><span>Produção esperada / mês</span><strong>R$ 6,57 mi</strong></div>
-<div class="metric-wide"><span>17% sobre produção</span><strong>R$ 1,12 mi</strong></div>
-</div>
-<div class="share"><span>% da base tratada ao mês</span><b>5,00%</b></div>
+      <div class="company-metrics exact-metrics">
+      <div><span>Faturamento 12/2025</span><strong>R$ 1,5 bi</strong></div>
+      <div><span>Clientes ativos</span><strong>92.000</strong></div>
+      <div><span>% tratados / mês</span><strong>5,00%</strong></div>
+      <div><span>Clientes tratados / mês</span><strong>4.600</strong></div>
+      <div><span>Conversões · 1,5%</span><strong>69</strong></div>
+      <div><span>Operadores · 250/mês</span><strong>18</strong></div>
+      <div class="metric-wide"><span>Produção esperada / mês</span><strong>R$ 6.571.767,00</strong></div>
+      <div class="metric-wide fee-stat"><span>Produção × TX ADM média 17%</span><strong>R$ 1.117.200,39</strong></div>
+    </div>
+<div class="share"><span>Cenário individual do parceiro</span><b>Base 12/2025</b></div>
     </a><a class="company-card" href="https://www.fastshop.com.br" target="_blank" rel="noopener">
       <div class="company-logo"><img src="assets/fast-shop.png" alt="Fast Shop"></div>
       <div class="company-title"><span>Fast Shop</span><small>Em negociação <b>↗</b></small></div>
-      <div class="company-metrics">
-<div><span>Faturamento 12/2025</span><strong>R$ 4,5 bi</strong></div>
-<div><span>Base ativa estimada</span><strong>10 mi</strong></div>
-<div><span>Base tratada / mês</span><strong>12.600</strong></div>
-<div><span>Conversões · 1,5%</span><strong>189</strong></div>
-<div><span>Operadores necessários</span><strong>50</strong></div>
-<div><span>Produção esperada / mês</span><strong>R$ 18,00 mi</strong></div>
-<div class="metric-wide"><span>17% sobre produção</span><strong>R$ 3,06 mi</strong></div>
-</div>
-<div class="share"><span>% da base tratada ao mês</span><b>0,13%</b></div>
+      <div class="company-metrics exact-metrics">
+      <div><span>Faturamento 12/2025</span><strong>R$ 4,5 bi</strong></div>
+      <div><span>Clientes ativos</span><strong>10.000.000</strong></div>
+      <div><span>% tratados / mês</span><strong>0,13%</strong></div>
+      <div><span>Clientes tratados / mês</span><strong>12.600</strong></div>
+      <div><span>Conversões · 1,5%</span><strong>189</strong></div>
+      <div><span>Operadores · 250/mês</span><strong>50</strong></div>
+      <div class="metric-wide"><span>Produção esperada / mês</span><strong>R$ 18.000.927,00</strong></div>
+      <div class="metric-wide fee-stat"><span>Produção × TX ADM média 17%</span><strong>R$ 3.060.157,59</strong></div>
+    </div>
+<div class="share"><span>Cenário individual do parceiro</span><b>Base 12/2025</b></div>
     </a><a class="company-card" href="https://www.caruanafinanceira.com.br" target="_blank" rel="noopener">
       <div class="company-logo"><img src="assets/caruana-financeira.png" alt="Caruana Financeira"></div>
       <div class="company-title"><span>Caruana Financeira</span><small>Em negociação <b>↗</b></small></div>
-      <div class="company-metrics">
-<div><span>Faturamento 12/2025</span><strong>R$ 500 mi</strong></div>
-<div><span>Base ativa estimada</span><strong>1,5 mi</strong></div>
-<div><span>Base tratada / mês</span><strong>12.450</strong></div>
-<div><span>Conversões · 1,5%</span><strong>187</strong></div>
-<div><span>Operadores necessários</span><strong>50</strong></div>
-<div><span>Produção esperada / mês</span><strong>R$ 17,79 mi</strong></div>
-<div class="metric-wide"><span>17% sobre produção</span><strong>R$ 3,02 mi</strong></div>
-</div>
-<div class="share"><span>% da base tratada ao mês</span><b>0,83%</b></div>
+      <div class="company-metrics exact-metrics">
+      <div><span>Faturamento 12/2025</span><strong>R$ 500 mi</strong></div>
+      <div><span>Clientes ativos</span><strong>1.500.000</strong></div>
+      <div><span>% tratados / mês</span><strong>0,83%</strong></div>
+      <div><span>Clientes tratados / mês</span><strong>12.450</strong></div>
+      <div><span>Conversões · 1,5%</span><strong>187</strong></div>
+      <div><span>Operadores · 250/mês</span><strong>50</strong></div>
+      <div class="metric-wide"><span>Produção esperada / mês</span><strong>R$ 17.786.630,25</strong></div>
+      <div class="metric-wide fee-stat"><span>Produção × TX ADM média 17%</span><strong>R$ 3.023.727,14</strong></div>
+    </div>
+<div class="share"><span>Cenário individual do parceiro</span><b>Base 12/2025</b></div>
     </a><a class="company-card" href="https://alpe.com.br" target="_blank" rel="noopener">
       <div class="company-logo"><img src="assets/alpe.png" alt="ALPE"></div>
       <div class="company-title"><span>ALPE</span><small>Em negociação <b>↗</b></small></div>
-      <div class="company-metrics">
-<div><span>Faturamento 12/2025</span><strong>R$ 200 mi</strong></div>
-<div><span>Base ativa estimada</span><strong>500 mil</strong></div>
-<div><span>Base tratada / mês</span><strong>12.500</strong></div>
-<div><span>Conversões · 1,5%</span><strong>188</strong></div>
-<div><span>Operadores necessários</span><strong>50</strong></div>
-<div><span>Produção esperada / mês</span><strong>R$ 17,86 mi</strong></div>
-<div class="metric-wide"><span>17% sobre produção</span><strong>R$ 3,04 mi</strong></div>
-</div>
-<div class="share"><span>% da base tratada ao mês</span><b>2,50%</b></div>
+      <div class="company-metrics exact-metrics">
+      <div><span>Faturamento 12/2025</span><strong>R$ 200 mi</strong></div>
+      <div><span>Clientes ativos</span><strong>500.000</strong></div>
+      <div><span>% tratados / mês</span><strong>2,50%</strong></div>
+      <div><span>Clientes tratados / mês</span><strong>12.500</strong></div>
+      <div><span>Conversões · 1,5%</span><strong>188</strong></div>
+      <div><span>Operadores · 250/mês</span><strong>50</strong></div>
+      <div class="metric-wide"><span>Produção esperada / mês</span><strong>R$ 17.858.062,50</strong></div>
+      <div class="metric-wide fee-stat"><span>Produção × TX ADM média 17%</span><strong>R$ 3.035.870,63</strong></div>
+    </div>
+<div class="share"><span>Cenário individual do parceiro</span><b>Base 12/2025</b></div>
     </a><a class="company-card" href="https://www.credsystem.com.br" target="_blank" rel="noopener">
       <div class="company-logo"><img src="assets/credsystem.png" alt="Credsystem"></div>
       <div class="company-title"><span>Credsystem</span><small>Em negociação <b>↗</b></small></div>
-      <div class="company-metrics">
-<div><span>Faturamento 12/2025</span><strong>R$ 3,0 bi</strong></div>
-<div><span>Base ativa estimada</span><strong>15 mi</strong></div>
-<div><span>Base tratada / mês</span><strong>12.450</strong></div>
-<div><span>Conversões · 1,5%</span><strong>187</strong></div>
-<div><span>Operadores necessários</span><strong>50</strong></div>
-<div><span>Produção esperada / mês</span><strong>R$ 17,79 mi</strong></div>
-<div class="metric-wide"><span>17% sobre produção</span><strong>R$ 3,02 mi</strong></div>
-</div>
-<div class="share"><span>% da base tratada ao mês</span><b>0,08%</b></div>
+      <div class="company-metrics exact-metrics">
+      <div><span>Faturamento 12/2025</span><strong>R$ 3,0 bi</strong></div>
+      <div><span>Clientes ativos</span><strong>15.000.000</strong></div>
+      <div><span>% tratados / mês</span><strong>0,08%</strong></div>
+      <div><span>Clientes tratados / mês</span><strong>12.450</strong></div>
+      <div><span>Conversões · 1,5%</span><strong>187</strong></div>
+      <div><span>Operadores · 250/mês</span><strong>50</strong></div>
+      <div class="metric-wide"><span>Produção esperada / mês</span><strong>R$ 17.786.630,25</strong></div>
+      <div class="metric-wide fee-stat"><span>Produção × TX ADM média 17%</span><strong>R$ 3.023.727,14</strong></div>
+    </div>
+<div class="share"><span>Cenário individual do parceiro</span><b>Base 12/2025</b></div>
     </a><a class="company-card" href="https://www.sabemi.com.br" target="_blank" rel="noopener">
       <div class="company-logo"><img src="assets/sabemi.png" alt="Sabemi"></div>
       <div class="company-title"><span>Sabemi</span><small>Em negociação <b>↗</b></small></div>
-      <div class="company-metrics">
-<div><span>Faturamento 12/2025</span><strong>R$ 1,5 bi</strong></div>
-<div><span>Base ativa estimada</span><strong>1 mi</strong></div>
-<div><span>Base tratada / mês</span><strong>12.500</strong></div>
-<div><span>Conversões · 1,5%</span><strong>188</strong></div>
-<div><span>Operadores necessários</span><strong>50</strong></div>
-<div><span>Produção esperada / mês</span><strong>R$ 17,86 mi</strong></div>
-<div class="metric-wide"><span>17% sobre produção</span><strong>R$ 3,04 mi</strong></div>
-</div>
-<div class="share"><span>% da base tratada ao mês</span><b>1,25%</b></div>
+      <div class="company-metrics exact-metrics">
+      <div><span>Faturamento 12/2025</span><strong>R$ 1,5 bi</strong></div>
+      <div><span>Clientes ativos</span><strong>1.000.000</strong></div>
+      <div><span>% tratados / mês</span><strong>1,25%</strong></div>
+      <div><span>Clientes tratados / mês</span><strong>12.500</strong></div>
+      <div><span>Conversões · 1,5%</span><strong>188</strong></div>
+      <div><span>Operadores · 250/mês</span><strong>50</strong></div>
+      <div class="metric-wide"><span>Produção esperada / mês</span><strong>R$ 17.858.062,50</strong></div>
+      <div class="metric-wide fee-stat"><span>Produção × TX ADM média 17%</span><strong>R$ 3.035.870,63</strong></div>
+    </div>
+<div class="share"><span>Cenário individual do parceiro</span><b>Base 12/2025</b></div>
     </a><a class="company-card" href="https://rdsaude.com.br" target="_blank" rel="noopener">
       <div class="company-logo"><img src="assets/rd-sa-de.png" alt="RD Saúde"></div>
       <div class="company-title"><span>RD Saúde</span><small>Em negociação <b>↗</b></small></div>
-      <div class="company-metrics">
-<div><span>Faturamento 12/2025</span><strong>R$ 47,6 bi</strong></div>
-<div><span>Base ativa estimada</span><strong>52 mi</strong></div>
-<div><span>Base tratada / mês</span><strong>12.480</strong></div>
-<div><span>Conversões · 1,5%</span><strong>187</strong></div>
-<div><span>Operadores necessários</span><strong>50</strong></div>
-<div><span>Produção esperada / mês</span><strong>R$ 17,83 mi</strong></div>
-<div class="metric-wide"><span>17% sobre produção</span><strong>R$ 3,03 mi</strong></div>
-</div>
-<div class="share"><span>% da base tratada ao mês</span><b>0,02%</b></div>
+      <div class="company-metrics exact-metrics">
+      <div><span>Faturamento 12/2025</span><strong>R$ 47,6 bi</strong></div>
+      <div><span>Clientes ativos</span><strong>52.000.000</strong></div>
+      <div><span>% tratados / mês</span><strong>0,02%</strong></div>
+      <div><span>Clientes tratados / mês</span><strong>12.480</strong></div>
+      <div><span>Conversões · 1,5%</span><strong>187</strong></div>
+      <div><span>Operadores · 250/mês</span><strong>50</strong></div>
+      <div class="metric-wide"><span>Produção esperada / mês</span><strong>R$ 17.829.489,60</strong></div>
+      <div class="metric-wide fee-stat"><span>Produção × TX ADM média 17%</span><strong>R$ 3.031.013,23</strong></div>
+    </div>
+<div class="share"><span>Cenário individual do parceiro</span><b>Base 12/2025</b></div>
     </a><a class="company-card" href="https://www.ouribank.com" target="_blank" rel="noopener">
       <div class="company-logo"><img src="assets/ouribank.png" alt="Ouribank"></div>
       <div class="company-title"><span>Ouribank</span><small>Em negociação <b>↗</b></small></div>
-      <div class="company-metrics">
-<div><span>Faturamento 12/2025</span><strong>R$ 1,4 bi</strong></div>
-<div><span>Base ativa estimada</span><strong>850 mil</strong></div>
-<div><span>Base tratada / mês</span><strong>12.580</strong></div>
-<div><span>Conversões · 1,5%</span><strong>189</strong></div>
-<div><span>Operadores necessários</span><strong>50</strong></div>
-<div><span>Produção esperada / mês</span><strong>R$ 17,97 mi</strong></div>
-<div class="metric-wide"><span>17% sobre produção</span><strong>R$ 3,06 mi</strong></div>
-</div>
-<div class="share"><span>% da base tratada ao mês</span><b>1,48%</b></div>
+      <div class="company-metrics exact-metrics">
+      <div><span>Faturamento 12/2025</span><strong>R$ 1,4 bi</strong></div>
+      <div><span>Clientes ativos</span><strong>850.000</strong></div>
+      <div><span>% tratados / mês</span><strong>1,48%</strong></div>
+      <div><span>Clientes tratados / mês</span><strong>12.580</strong></div>
+      <div><span>Conversões · 1,5%</span><strong>189</strong></div>
+      <div><span>Operadores · 250/mês</span><strong>50</strong></div>
+      <div class="metric-wide"><span>Produção esperada / mês</span><strong>R$ 17.972.354,10</strong></div>
+      <div class="metric-wide fee-stat"><span>Produção × TX ADM média 17%</span><strong>R$ 3.055.300,20</strong></div>
+    </div>
+<div class="share"><span>Cenário individual do parceiro</span><b>Base 12/2025</b></div>
     </a><a class="company-card" href="https://www.cogna.com.br" target="_blank" rel="noopener">
       <div class="company-logo"><img src="assets/kroton.jpg" alt="Kroton"></div>
       <div class="company-title"><span>Kroton</span><small>Em negociação <b>↗</b></small></div>
-      <div class="company-metrics">
-<div><span>Faturamento 12/2025</span><strong>R$ 586 mi</strong></div>
-<div><span>Base ativa estimada</span><strong>3 mi</strong></div>
-<div><span>Base tratada / mês</span><strong>12.570</strong></div>
-<div><span>Conversões · 1,5%</span><strong>189</strong></div>
-<div><span>Operadores necessários</span><strong>50</strong></div>
-<div><span>Produção esperada / mês</span><strong>R$ 17,96 mi</strong></div>
-<div class="metric-wide"><span>17% sobre produção</span><strong>R$ 3,05 mi</strong></div>
-</div>
-<div class="share"><span>% da base tratada ao mês</span><b>0,42%</b></div>
+      <div class="company-metrics exact-metrics">
+      <div><span>Faturamento 12/2025</span><strong>R$ 586 mi</strong></div>
+      <div><span>Clientes ativos</span><strong>3.000.000</strong></div>
+      <div><span>% tratados / mês</span><strong>0,42%</strong></div>
+      <div><span>Clientes tratados / mês</span><strong>12.570</strong></div>
+      <div><span>Conversões · 1,5%</span><strong>189</strong></div>
+      <div><span>Operadores · 250/mês</span><strong>50</strong></div>
+      <div class="metric-wide"><span>Produção esperada / mês</span><strong>R$ 17.958.067,65</strong></div>
+      <div class="metric-wide fee-stat"><span>Produção × TX ADM média 17%</span><strong>R$ 3.052.871,50</strong></div>
+    </div>
+<div class="share"><span>Cenário individual do parceiro</span><b>Base 12/2025</b></div>
     </a><a class="company-card" href="https://www.ifood.com.br" target="_blank" rel="noopener">
       <div class="company-logo"><img src="assets/ifood.png" alt="iFood"></div>
       <div class="company-title"><span>iFood</span><small>Em negociação <b>↗</b></small></div>
-      <div class="company-metrics">
-<div><span>Faturamento 12/2025</span><strong>R$ 180 bi</strong></div>
-<div><span>Base ativa estimada</span><strong>60 mi</strong></div>
-<div><span>Base tratada / mês</span><strong>12.600</strong></div>
-<div><span>Conversões · 1,5%</span><strong>189</strong></div>
-<div><span>Operadores necessários</span><strong>50</strong></div>
-<div><span>Produção esperada / mês</span><strong>R$ 18,00 mi</strong></div>
-<div class="metric-wide"><span>17% sobre produção</span><strong>R$ 3,06 mi</strong></div>
-</div>
-<div class="share"><span>% da base tratada ao mês</span><b>0,02%</b></div>
+      <div class="company-metrics exact-metrics">
+      <div><span>Faturamento 12/2025</span><strong>R$ 180 bi</strong></div>
+      <div><span>Clientes ativos</span><strong>60.000.000</strong></div>
+      <div><span>% tratados / mês</span><strong>0,02%</strong></div>
+      <div><span>Clientes tratados / mês</span><strong>12.600</strong></div>
+      <div><span>Conversões · 1,5%</span><strong>189</strong></div>
+      <div><span>Operadores · 250/mês</span><strong>50</strong></div>
+      <div class="metric-wide"><span>Produção esperada / mês</span><strong>R$ 18.000.927,00</strong></div>
+      <div class="metric-wide fee-stat"><span>Produção × TX ADM média 17%</span><strong>R$ 3.060.157,59</strong></div>
+    </div>
+<div class="share"><span>Cenário individual do parceiro</span><b>Base 12/2025</b></div>
     </a><a class="company-card" href="#" onclick="return false">
 <div class="company-logo ste-logo"><div class="ste-mark"><b>STE</b><span>Sindicato Transporte<br>de Escolares</span></div></div>
 <div class="company-title"><span>STE Sindicato Transporte de Escolares</span><small>Em negociação</small></div>
-<div class="company-metrics">
-<div><span>Faturamento 12/2025</span><strong>R$ 720 mi</strong></div>
-<div><span>Base ativa estimada</span><strong>65.331</strong></div>
-<div><span>Base tratada / mês</span><strong>12.413</strong></div>
-<div><span>Conversões · 1,5%</span><strong>186</strong></div>
-<div><span>Operadores necessários</span><strong>50</strong></div>
-<div><span>Produção esperada / mês</span><strong>R$ 17,73 mi</strong></div>
-<div class="metric-wide"><span>17% sobre produção</span><strong>R$ 3,01 mi</strong></div>
-</div>
-<div class="share"><span>% da base tratada ao mês</span><b>19,00%</b></div></a></div>
+<div class="company-metrics exact-metrics">
+      <div><span>Faturamento 12/2025</span><strong>R$ 720 mi</strong></div>
+      <div><span>Clientes ativos</span><strong>65.331</strong></div>
+      <div><span>% tratados / mês</span><strong>19,00%</strong></div>
+      <div><span>Clientes tratados / mês</span><strong>12.413</strong></div>
+      <div><span>Conversões · 1,5%</span><strong>186</strong></div>
+      <div><span>Operadores · 250/mês</span><strong>50</strong></div>
+      <div class="metric-wide"><span>Produção esperada / mês</span><strong>R$ 17.733.613,23</strong></div>
+      <div class="metric-wide fee-stat"><span>Produção × TX ADM média 17%</span><strong>R$ 3.014.714,25</strong></div>
+    </div>
+<div class="share"><span>Cenário individual do parceiro</span><b>Base 12/2025</b></div></a></div>
 </div></section>
 
 <section id="b2b2c" class="tab content"><div class="wrap">
@@ -216,8 +302,50 @@ footer{background:#031129;color:#899bb4;padding:27px 0;font-size:9px;margin-top:
 </div>
 <div class="expansion-strip"><div><small>POTENCIAL PRESERVADO PARA PRÓXIMA ONDA</small><strong>15.810 leads</strong></div><p>Aguardando alinhamento comercial com a EZZE antes de avançarmos com novas abordagens.</p></div>
 <div class="dash">
-  <div class="panel"><h3>Mapa da rede potencial</h3><p class="sub">Clique em uma UF para filtrar os indicadores, municípios e a participação daquele estado na carteira.</p><div class="map-grid"><div class="map-shell" id="mapShell"><div class="map-loading" id="mapLoading">Carregando distribuição geográfica…</div><div class="map-tooltip" id="mapTooltip"></div><svg id="brMap" viewBox="20 35 555 630" aria-label="Mapa interativo do Brasil por UF"><polygon class="real-state state-path" data-uf="RR" points="175,50 225,48 245,82 215,112 170,100 150,75" fill="hsl(211 68% 90.7%)"><title>RR</title></polygon><text class="uf-label" x="196.7" y="77.8" text-anchor="middle">RR</text><polygon class="real-state state-path" data-uf="AP" points="315,62 350,70 365,105 340,125 310,105" fill="hsl(211 68% 90.6%)"><title>AP</title></polygon><text class="uf-label" x="336.0" y="93.4" text-anchor="middle">AP</text><polygon class="real-state state-path" data-uf="AM" points="85,105 170,95 215,115 250,145 235,205 170,220 110,200 70,160" fill="hsl(211 68% 88.9%)"><title>AM</title></polygon><text class="uf-label" x="163.1" y="155.6" text-anchor="middle">AM</text><polygon class="real-state state-path" data-uf="AC" points="35,190 90,185 110,220 80,245 38,230" fill="hsl(211 68% 90.5%)"><title>AC</title></polygon><text class="uf-label" x="70.6" y="214.0" text-anchor="middle">AC</text><polygon class="real-state state-path" data-uf="RO" points="120,220 175,220 205,250 185,290 130,280 105,245" fill="hsl(211 68% 90.0%)"><title>RO</title></polygon><text class="uf-label" x="153.3" y="250.8" text-anchor="middle">RO</text><polygon class="real-state state-path" data-uf="PA" points="245,110 310,105 340,130 390,155 370,215 330,245 265,225 235,190" fill="hsl(211 68% 87.6%)"><title>PA</title></polygon><text class="uf-label" x="310.6" y="171.9" text-anchor="middle">PA</text><polygon class="real-state state-path" data-uf="TO" points="300,245 345,230 365,285 350,330 310,320 285,280" fill="hsl(211 68% 90.1%)"><title>TO</title></polygon><text class="uf-label" x="325.8" y="281.7" text-anchor="middle">TO</text><polygon class="real-state state-path" data-uf="MA" points="370,185 415,175 440,215 420,255 380,245 355,215" fill="hsl(211 68% 87.8%)"><title>MA</title></polygon><text class="uf-label" x="396.7" y="215.0" text-anchor="middle">MA</text><polygon class="real-state state-path" data-uf="PI" points="415,235 455,220 475,260 455,305 415,295 395,260" fill="hsl(211 68% 89.5%)"><title>PI</title></polygon><text class="uf-label" x="435.0" y="262.5" text-anchor="middle">PI</text><polygon class="real-state state-path" data-uf="CE" points="465,215 505,205 525,235 500,260 470,255" fill="hsl(211 68% 86.3%)"><title>CE</title></polygon><text class="uf-label" x="493.0" y="234.0" text-anchor="middle">CE</text><polygon class="real-state state-path" data-uf="RN" points="515,225 550,230 555,250 520,255 500,245" fill="hsl(211 68% 89.3%)"><title>RN</title></polygon><text class="uf-label" x="528.0" y="241.0" text-anchor="middle">RN</text><polygon class="real-state state-path" data-uf="PB" points="505,255 548,255 550,275 505,278" fill="hsl(211 68% 89.3%)"><title>PB</title></polygon><text class="uf-label" x="527.0" y="265.8" text-anchor="middle">PB</text><polygon class="real-state state-path" data-uf="PE" points="480,275 545,278 535,300 475,305 455,290" fill="hsl(211 68% 86.8%)"><title>PE</title></polygon><text class="uf-label" x="498.0" y="289.6" text-anchor="middle">PE</text><polygon class="real-state state-path" data-uf="AL" points="505,302 535,302 528,322 500,320" fill="hsl(211 68% 89.7%)"><title>AL</title></polygon><text class="uf-label" x="517.0" y="311.5" text-anchor="middle">AL</text><polygon class="real-state state-path" data-uf="SE" points="492,322 522,324 515,342 488,340" fill="hsl(211 68% 89.9%)"><title>SE</title></polygon><text class="uf-label" x="504.2" y="332.0" text-anchor="middle">SE</text><polygon class="real-state state-path" data-uf="BA" points="405,295 455,300 495,335 480,390 440,420 390,390 370,340" fill="hsl(211 68% 84.9%)"><title>BA</title></polygon><text class="uf-label" x="433.6" y="352.9" text-anchor="middle">BA</text><polygon class="real-state state-path" data-uf="MT" points="190,270 285,255 310,320 285,370 220,380 175,330" fill="hsl(211 68% 87.3%)"><title>MT</title></polygon><text class="uf-label" x="244.2" y="320.8" text-anchor="middle">MT</text><polygon class="real-state state-path" data-uf="MS" points="215,380 285,370 310,420 285,455 225,445 195,410" fill="hsl(211 68% 89.0%)"><title>MS</title></polygon><text class="uf-label" x="252.5" y="413.3" text-anchor="middle">MS</text><polygon class="real-state state-path" data-uf="GO" points="310,320 370,315 390,365 365,405 315,395 285,365" fill="hsl(211 68% 83.9%)"><title>GO</title></polygon><text class="uf-label" x="339.2" y="360.8" text-anchor="middle">GO</text><polygon class="real-state state-path" data-uf="DF" points="350,350 360,350 362,360 352,362 347,357" fill="hsl(211 68% 88.0%)"><title>DF</title></polygon><text class="uf-label tiny" x="354.2" y="349.8" text-anchor="middle">DF</text><polygon class="real-state state-path" data-uf="MG" points="365,385 440,390 455,430 415,465 355,455 325,420" fill="hsl(211 68% 74.8%)"><title>MG</title></polygon><text class="uf-label" x="392.5" y="424.2" text-anchor="middle">MG</text><polygon class="real-state state-path" data-uf="ES" points="445,405 470,410 468,445 445,455 430,430" fill="hsl(211 68% 87.5%)"><title>ES</title></polygon><text class="uf-label" x="451.6" y="429.0" text-anchor="middle">ES</text><polygon class="real-state state-path" data-uf="RJ" points="410,455 450,452 462,470 430,480 400,472" fill="hsl(211 68% 80.2%)"><title>RJ</title></polygon><text class="uf-label" x="430.4" y="465.8" text-anchor="middle">RJ</text><polygon class="real-state state-path" data-uf="SP" points="300,425 355,450 410,468 390,500 325,505 280,475" fill="hsl(211 68% 43.0%)"><title>SP</title></polygon><text class="uf-label" x="343.3" y="470.5" text-anchor="middle">SP</text><polygon class="real-state state-path" data-uf="PR" points="280,480 330,505 385,505 370,535 315,545 270,520" fill="hsl(211 68% 77.6%)"><title>PR</title></polygon><text class="uf-label" x="325.0" y="515.0" text-anchor="middle">PR</text><polygon class="real-state state-path" data-uf="SC" points="315,545 370,535 390,555 350,570 310,562" fill="hsl(211 68% 79.1%)"><title>SC</title></polygon><text class="uf-label" x="347.0" y="553.4" text-anchor="middle">SC</text><polygon class="real-state state-path" data-uf="RS" points="300,560 350,570 365,610 330,650 285,625 270,590" fill="hsl(211 68% 80.2%)"><title>RS</title></polygon><text class="uf-label" x="316.7" y="600.8" text-anchor="middle">RS</text></svg></div><div class="state-side"><div class="state-head"><small id="stateLabel">BRASIL</small><strong id="stateTotal">16.000</strong><span id="stateShare">100% da rede potencial</span></div><div class="rank" id="stateRank"></div></div></div></div>
-  <div class="panel"><h3 id="citiesTitle">Principais municípios</h3><p class="sub">Concentração das empresas da rede potencial por município.</p><div class="list" id="cityList"></div></div>
+  <div class="panel map-panel">
+  <h3>Mapa da rede potencial</h3>
+  <p class="sub">Distribuição geográfica da carteira. Clique em uma UF para filtrar a leitura regional.</p>
+  <div class="map-grid">
+    <div class="real-map-shell" id="mapShell">
+      <img src="assets/brazil_states_map.webp" alt="Mapa do Brasil dividido por estados" class="real-map-image">
+      <div class="map-hotspots"><button class="map-hotspot" data-uf="AC" style="left:10.0%;top:35.0%;--heat:0.158" aria-label="AC: 46 parceiros"><span>AC</span></button>
+<button class="map-hotspot" data-uf="AM" style="left:25.5%;top:21.5%;--heat:0.187" aria-label="AM: 203 parceiros"><span>AM</span></button>
+<button class="map-hotspot" data-uf="RR" style="left:29.5%;top:7.5%;--heat:0.155" aria-label="RR: 28 parceiros"><span>RR</span></button>
+<button class="map-hotspot" data-uf="AP" style="left:52.0%;top:10.5%;--heat:0.157" aria-label="AP: 38 parceiros"><span>AP</span></button>
+<button class="map-hotspot" data-uf="PA" style="left:48.5%;top:25.0%;--heat:0.211" aria-label="PA: 336 parceiros"><span>PA</span></button>
+<button class="map-hotspot" data-uf="RO" style="left:27.0%;top:39.5%;--heat:0.168" aria-label="RO: 98 parceiros"><span>RO</span></button>
+<button class="map-hotspot" data-uf="MT" style="left:42.0%;top:47.0%;--heat:0.216" aria-label="MT: 364 parceiros"><span>MT</span></button>
+<button class="map-hotspot" data-uf="MS" style="left:44.5%;top:59.0%;--heat:0.186" aria-label="MS: 199 parceiros"><span>MS</span></button>
+<button class="map-hotspot" data-uf="TO" style="left:55.0%;top:41.0%;--heat:0.166" aria-label="TO: 87 parceiros"><span>TO</span></button>
+<button class="map-hotspot" data-uf="MA" style="left:65.0%;top:29.5%;--heat:0.206" aria-label="MA: 308 parceiros"><span>MA</span></button>
+<button class="map-hotspot" data-uf="PI" style="left:69.5%;top:34.0%;--heat:0.176" aria-label="PI: 145 parceiros"><span>PI</span></button>
+<button class="map-hotspot" data-uf="CE" style="left:78.0%;top:31.0%;--heat:0.233" aria-label="CE: 456 parceiros"><span>CE</span></button>
+<button class="map-hotspot" data-uf="RN" style="left:85.0%;top:31.5%;--heat:0.179" aria-label="RN: 162 parceiros"><span>RN</span></button>
+<button class="map-hotspot" data-uf="PB" style="left:86.0%;top:35.0%;--heat:0.181" aria-label="PB: 168 parceiros"><span>PB</span></button>
+<button class="map-hotspot" data-uf="PE" style="left:83.5%;top:38.0%;--heat:0.224" aria-label="PE: 409 parceiros"><span>PE</span></button>
+<button class="map-hotspot" data-uf="AL" style="left:84.0%;top:41.0%;--heat:0.172" aria-label="AL: 123 parceiros"><span>AL</span></button>
+<button class="map-hotspot" data-uf="SE" style="left:82.0%;top:44.0%;--heat:0.170" aria-label="SE: 111 parceiros"><span>SE</span></button>
+<button class="map-hotspot" data-uf="BA" style="left:71.0%;top:47.0%;--heat:0.258" aria-label="BA: 596 parceiros"><span>BA</span></button>
+<button class="map-hotspot" data-uf="GO" style="left:57.5%;top:52.0%;--heat:0.276" aria-label="GO: 693 parceiros"><span>GO</span></button>
+<button class="map-hotspot" data-uf="DF" style="left:59.0%;top:52.0%;--heat:0.203" aria-label="DF: 293 parceiros"><span>DF</span></button>
+<button class="map-hotspot" data-uf="MG" style="left:67.0%;top:59.0%;--heat:0.437" aria-label="MG: 1581 parceiros"><span>MG</span></button>
+<button class="map-hotspot" data-uf="ES" style="left:76.0%;top:61.0%;--heat:0.213" aria-label="ES: 345 parceiros"><span>ES</span></button>
+<button class="map-hotspot" data-uf="RJ" style="left:72.5%;top:66.0%;--heat:0.341" aria-label="RJ: 1053 parceiros"><span>RJ</span></button>
+<button class="map-hotspot" data-uf="SP" style="left:62.0%;top:66.5%;--heat:1.000" aria-label="SP: 4680 parceiros"><span>SP</span></button>
+<button class="map-hotspot" data-uf="PR" style="left:58.5%;top:73.0%;--heat:0.388" aria-label="PR: 1308 parceiros"><span>PR</span></button>
+<button class="map-hotspot" data-uf="SC" style="left:60.0%;top:78.5%;--heat:0.360" aria-label="SC: 1158 parceiros"><span>SC</span></button>
+<button class="map-hotspot" data-uf="RS" style="left:57.0%;top:88.0%;--heat:0.341" aria-label="RS: 1052 parceiros"><span>RS</span></button></div>
+      <div class="map-tooltip" id="mapTooltip"></div>
+    </div>
+    <div class="state-side">
+      <div class="state-head"><small id="stateLabel">BRASIL</small><strong id="stateTotal">16.000</strong><span id="stateShare">100% da rede potencial</span></div>
+      <button class="reset-map" id="resetMap">Ver Brasil</button>
+      <div class="rank" id="stateRank"></div>
+    </div>
+  </div>
+  <p class="map-source-note">Mapa vetorial de referência incorporado ao arquivo para funcionamento local. A seleção da UF atualiza os indicadores e municípios ao lado.</p>
+</div>
+<div class="panel"><h3 id="citiesTitle">Principais municípios</h3><p class="sub">Concentração das empresas da rede potencial por município.</p><div class="list" id="cityList"></div></div>
  </div>
  <div class="panel qualification-panel">
 <div class="qualification-head"><div><h3>Qualificação da rede potencial</h3><p class="sub">Uma carteira construída por indicação, com primeira onda validada antes da abordagem.</p></div><span class="qualification-badge">B2B2C · CARTEIRA PROPRIETÁRIA</span></div>
@@ -255,8 +383,14 @@ function renderActivities(items){
  document.getElementById("activityBars").innerHTML=data.map(([n,v])=>`<div class="profile-line"><label>${n}</label><strong>${fmt(v)}</strong><div class="track"><div class="fill" style="width:${v/max*100}%"></div></div></div>`).join("");
 }
 function selectState(uf){
- document.querySelectorAll(".state-path").forEach(p=>p.classList.toggle("selected",p.dataset.uf===uf));
- if(!uf){document.getElementById("stateLabel").textContent="BRASIL";document.getElementById("stateTotal").textContent="16.000";document.getElementById("stateShare").textContent="100% da rede potencial";document.getElementById("citiesTitle").textContent="Principais municípios";renderList(nationalCities);renderActivities(nationalActivities);return;}
+ document.querySelectorAll(".map-hotspot").forEach(p=>p.classList.toggle("selected",p.dataset.uf===uf));
+ if(!uf){
+   document.getElementById("stateLabel").textContent="BRASIL";
+   document.getElementById("stateTotal").textContent="16.000";
+   document.getElementById("stateShare").textContent="100% da rede potencial";
+   document.getElementById("citiesTitle").textContent="Principais municípios";
+   renderList(nationalCities); renderActivities(nationalActivities); return;
+ }
  const d=stateData[uf]; if(!d)return;
  document.getElementById("stateLabel").textContent=names[uf]+" · "+uf;
  document.getElementById("stateTotal").textContent=fmt(d.total);
@@ -280,44 +414,18 @@ function topoToPaths(topology){
 }
 
 function buildMap(){
- const loading=document.getElementById("mapLoading"),tip=document.getElementById("mapTooltip"),shell=document.getElementById("mapShell");
- document.querySelectorAll(".real-state").forEach(el=>{
+ const tip=document.getElementById("mapTooltip"), shell=document.getElementById("mapShell");
+ document.querySelectorAll(".map-hotspot").forEach(el=>{
    const uf=el.dataset.uf, d=stateData[uf]?.total||0;
    el.addEventListener("click",()=>selectState(uf));
    el.addEventListener("mousemove",e=>{
      tip.innerHTML=`<b>${names[uf]} · ${uf}</b><br>${fmt(d)} parceiros · ${(d/16000*100).toFixed(1).replace(".",",")}%`;
-     const rr=shell.getBoundingClientRect();tip.style.left=(e.clientX-rr.left)+"px";tip.style.top=(e.clientY-rr.top)+"px";tip.style.opacity=1;
+     const rr=shell.getBoundingClientRect();
+     tip.style.left=(e.clientX-rr.left)+"px"; tip.style.top=(e.clientY-rr.top)+"px"; tip.style.opacity=1;
    });
    el.addEventListener("mouseleave",()=>tip.style.opacity=0);
  });
- loading.style.display="none";
+ const reset=document.getElementById("resetMap"); if(reset) reset.addEventListener("click",()=>selectState(null));
 }
 buildMap();
-</script></body></html><style>
-.hero-grid-single{grid-template-columns:1fr;min-height:300px;max-width:1100px}
-.hero-grid-single h1{max-width:none}
-.lead-origin{background:linear-gradient(145deg,#071d42,#0b326d);color:#fff;border-radius:24px;padding:26px 28px;margin-top:20px}
-.lead-origin small{display:block;color:#e4bf68;font-size:9px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
-.lead-origin h3{margin:0 0 8px;font-size:20px}
-.lead-origin p{margin:0;color:#ced9e7;font-size:12px;line-height:1.65;max-width:1050px}
-.map-note{font-size:10px;color:#748296;line-height:1.5;margin-top:12px}
-</style><style>
-.real-state{stroke:#fff;stroke-width:2;vector-effect:non-scaling-stroke;cursor:pointer;transition:filter .16s,stroke .16s,transform .16s;transform-box:fill-box;transform-origin:center}
-.real-state:hover{filter:brightness(.87);stroke:#c99732;stroke-width:3}
-.real-state.selected{stroke:#061a3b;stroke-width:3;filter:saturate(1.15) brightness(.88)}
-.uf-label{font-size:10px;font-weight:900;fill:#18324f;pointer-events:none;paint-order:stroke;stroke:#fff;stroke-width:2px;stroke-linejoin:round}.uf-label.tiny{font-size:8px}
-.map-shell{overflow:hidden}.map-shell svg{max-width:560px;height:540px}
-.expansion-strip{margin:0 0 22px;background:linear-gradient(100deg,#071d42,#0b326d);color:#fff;border-radius:18px;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:28px}
-.expansion-strip small{display:block;font-size:8px;letter-spacing:.11em;color:#e4bf68;font-weight:900}.expansion-strip strong{display:block;font-size:25px;margin-top:3px}.expansion-strip p{margin:0;max-width:600px;color:#cbd6e4;font-size:11px;line-height:1.5}
-.qualification-panel{margin-top:20px}.qualification-head{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}.qualification-badge{font-size:8px;letter-spacing:.1em;font-weight:900;color:#7a641d;background:#fff7df;border:1px solid #ead9a4;border-radius:999px;padding:8px 11px;white-space:nowrap}
-.qualification-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}.q-card{border:1px solid #e1e7ee;border-radius:18px;padding:20px;background:#fbfcfe;min-height:210px}.q-card small{font-size:8px;letter-spacing:.1em;color:#7b899a;font-weight:900}.q-card strong{display:block;font-size:31px;letter-spacing:-.04em;color:#061a3b;margin:12px 0 4px}.q-card b{display:block;font-size:11px;color:#31445b;min-height:30px}.q-card p{font-size:10px;color:#718096;line-height:1.55;margin:10px 0 0}.q-card.accent{border-top:4px solid #c99732;background:#fffdf8}.q-card.dark{background:linear-gradient(145deg,#071d42,#0b326d);border:0}.q-card.dark small{color:#e4bf68}.q-card.dark strong,.q-card.dark b{color:#fff}.q-card.dark p{color:#cbd6e4}
-@media(max-width:1100px){.qualification-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:720px){.expansion-strip,.qualification-head{align-items:flex-start;flex-direction:column}.qualification-grid{grid-template-columns:1fr}.qualification-badge{white-space:normal}.map-shell svg{height:430px}.q-card{min-height:auto}.funnel-v13{grid-template-columns:repeat(2,1fr)}}
-</style><style>
-.company-card{min-height:430px}
-.company-metrics{grid-template-columns:1fr 1fr}
-.company-metrics .metric-wide{grid-column:1/-1;background:linear-gradient(100deg,#f7f3e9,#f3f6f9)}
-.company-metrics .metric-wide strong{color:#8a6218}
-.ste-logo{height:86px}.ste-mark{display:flex;align-items:center;gap:12px;color:#061a3b}.ste-mark b{font-size:30px;letter-spacing:-.06em;border-right:2px solid #c99732;padding-right:12px}.ste-mark span{font-size:9px;font-weight:850;line-height:1.3;text-transform:uppercase;letter-spacing:.04em}
-@media(max-width:720px){.company-card{min-height:auto}.company-metrics{grid-template-columns:1fr 1fr}.company-metrics .metric-wide{grid-column:1/-1}}
-</style>
+</script></body></html>
