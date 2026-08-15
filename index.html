@@ -381,6 +381,73 @@ footer{background:#031129;color:#899bb4;padding:27px 0;font-size:9px;margin-top:
  .uf-ranking-card{margin-bottom:8px}
 }
 </style>
+
+<style id="v114-map-layout">
+/* Painel principal: mapa + sidebar preenchida, sem buraco visual */
+.map-panel{padding:26px!important}
+.map-grid{
+ display:grid!important;
+ grid-template-columns:minmax(430px,1.45fr) minmax(250px,.72fr)!important;
+ gap:22px!important; align-items:stretch!important
+}
+.astrion-vector-map{
+ min-height:590px!important; height:100%!important;
+ display:flex!important; align-items:center!important; justify-content:center!important;
+ border-radius:22px!important; border:1px solid #dce5ee!important
+}
+.map-stage{width:min(100%,590px)!important;margin:auto!important}
+.state-side{
+ display:flex!important;flex-direction:column!important;justify-content:flex-start!important;
+ gap:12px!important;align-self:stretch!important
+}
+.state-head{padding:22px 24px!important;border-radius:20px!important}
+.state-head strong{font-size:36px!important}
+.reset-map{min-height:44px!important;border-radius:14px!important}
+
+/* Ranking agora ocupa de fato o espaço disponível */
+.uf-ranking-card{
+ margin-top:0!important; flex:1 1 auto!important;
+ display:flex!important;flex-direction:column!important;
+ padding:16px 16px 10px!important;border-radius:18px!important;
+ min-height:0!important
+}
+.uf-ranking-head{margin-bottom:6px!important}
+.uf-ranking-head span{font-size:8px!important}
+.uf-ranking{display:flex!important;flex-direction:column!important;flex:1!important}
+.uf-rank-line{
+ flex:1 1 0!important; min-height:39px!important;
+ grid-template-columns:30px minmax(0,1fr)!important;
+ padding:7px 4px!important
+}
+.uf-rank-line b{font-size:10px!important}
+.uf-rank-values{margin:0 0 5px!important}
+.uf-rank-values strong{font-size:9px!important}
+.uf-rank-values span{font-size:8px!important}
+.uf-rank-track{height:6px!important}
+.uf-rank-line.selected{background:#f3f6fa!important;border-radius:9px!important}
+.uf-rank-line.selected b{color:#b7811e!important}
+
+/* Municípios com proporção visual equivalente */
+.detail-panel{padding:26px!important}
+#cityList{min-height:480px!important}
+.city-row{min-height:57px!important}
+
+/* Remove qualquer ranking legado duplicado que ainda exista fora do novo card */
+.state-side > .rank{display:none!important}
+
+@media(max-width:1050px){
+ .map-grid{grid-template-columns:1fr!important}
+ .astrion-vector-map{min-height:520px!important}
+ .state-side{display:grid!important;grid-template-columns:1fr 1fr!important}
+ .state-head,.reset-map,.uf-ranking-card{grid-column:1/-1!important}
+ .uf-ranking-card{min-height:430px!important}
+}
+@media(max-width:650px){
+ .map-panel,.detail-panel{padding:18px!important}
+ .astrion-vector-map{min-height:390px!important}
+ .uf-ranking-card{min-height:400px!important}
+}
+</style>
 </head><body>
 <header><div class="wrap top"><a class="brand" href="#"><img src="assets/astrion.png" alt="Astrion Assessoria"></a><div class="tabs"><button class="active" data-tab="consolidado">Consolidado</button><button data-tab="b2b">B2B</button><button data-tab="b2b2c">B2B2C</button></div><button class="print" onclick="window.print()">Imprimir / PDF</button></div></header>
 <div class="hero"><div class="wrap hero-grid hero-grid-single">
@@ -623,8 +690,77 @@ footer{background:#031129;color:#899bb4;padding:27px 0;font-size:9px;margin-top:
             <span>DISTRIBUIÇÃO POR UF</span>
             <small>Clique em uma linha para filtrar</small>
           </div>
-          <div id="ufRanking" class="uf-ranking"></div>
-        </div>
+          <div id="ufRanking" class="uf-ranking">
+    <button type="button" class="uf-rank-line" data-ufline="SP" aria-label="Filtrar SP">
+      <b>SP</b>
+      <div class="uf-rank-data">
+        <div class="uf-rank-values"><strong>4.680</strong><span>29.2%</span></div>
+        <div class="uf-rank-track"><div class="uf-rank-fill" style="width:100.00%"></div></div>
+      </div>
+    </button>
+    <button type="button" class="uf-rank-line" data-ufline="MG" aria-label="Filtrar MG">
+      <b>MG</b>
+      <div class="uf-rank-data">
+        <div class="uf-rank-values"><strong>1.581</strong><span>9.9%</span></div>
+        <div class="uf-rank-track"><div class="uf-rank-fill" style="width:33.78%"></div></div>
+      </div>
+    </button>
+    <button type="button" class="uf-rank-line" data-ufline="PR" aria-label="Filtrar PR">
+      <b>PR</b>
+      <div class="uf-rank-data">
+        <div class="uf-rank-values"><strong>1.308</strong><span>8.2%</span></div>
+        <div class="uf-rank-track"><div class="uf-rank-fill" style="width:27.95%"></div></div>
+      </div>
+    </button>
+    <button type="button" class="uf-rank-line" data-ufline="SC" aria-label="Filtrar SC">
+      <b>SC</b>
+      <div class="uf-rank-data">
+        <div class="uf-rank-values"><strong>1.158</strong><span>7.2%</span></div>
+        <div class="uf-rank-track"><div class="uf-rank-fill" style="width:24.74%"></div></div>
+      </div>
+    </button>
+    <button type="button" class="uf-rank-line" data-ufline="RJ" aria-label="Filtrar RJ">
+      <b>RJ</b>
+      <div class="uf-rank-data">
+        <div class="uf-rank-values"><strong>1.053</strong><span>6.6%</span></div>
+        <div class="uf-rank-track"><div class="uf-rank-fill" style="width:22.50%"></div></div>
+      </div>
+    </button>
+    <button type="button" class="uf-rank-line" data-ufline="RS" aria-label="Filtrar RS">
+      <b>RS</b>
+      <div class="uf-rank-data">
+        <div class="uf-rank-values"><strong>1.052</strong><span>6.6%</span></div>
+        <div class="uf-rank-track"><div class="uf-rank-fill" style="width:22.48%"></div></div>
+      </div>
+    </button>
+    <button type="button" class="uf-rank-line" data-ufline="GO" aria-label="Filtrar GO">
+      <b>GO</b>
+      <div class="uf-rank-data">
+        <div class="uf-rank-values"><strong>693</strong><span>4.3%</span></div>
+        <div class="uf-rank-track"><div class="uf-rank-fill" style="width:14.81%"></div></div>
+      </div>
+    </button>
+    <button type="button" class="uf-rank-line" data-ufline="BA" aria-label="Filtrar BA">
+      <b>BA</b>
+      <div class="uf-rank-data">
+        <div class="uf-rank-values"><strong>596</strong><span>3.7%</span></div>
+        <div class="uf-rank-track"><div class="uf-rank-fill" style="width:12.74%"></div></div>
+      </div>
+    </button>
+    <button type="button" class="uf-rank-line" data-ufline="CE" aria-label="Filtrar CE">
+      <b>CE</b>
+      <div class="uf-rank-data">
+        <div class="uf-rank-values"><strong>456</strong><span>2.9%</span></div>
+        <div class="uf-rank-track"><div class="uf-rank-fill" style="width:9.74%"></div></div>
+      </div>
+    </button>
+    <button type="button" class="uf-rank-line" data-ufline="PE" aria-label="Filtrar PE">
+      <b>PE</b>
+      <div class="uf-rank-data">
+        <div class="uf-rank-values"><strong>409</strong><span>2.6%</span></div>
+        <div class="uf-rank-track"><div class="uf-rank-fill" style="width:8.74%"></div></div>
+      </div>
+    </button></div></div>
       <div class="rank" id="stateRank"></div>
     </div>
   </div>
@@ -1008,146 +1144,75 @@ if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded"
 })();
 </script>
 
-<script id="v111-city-init">
-(function(){
-  function initNationalCities(){
-    try{
-      if(typeof renderList==="function" && typeof nationalCitiesSafe!=="undefined"){
-        renderList(nationalCitiesSafe,16000);
-      }
-      var title=document.getElementById("citiesTitle");
-      if(title && !title.textContent.trim()) title.textContent="Principais municípios · Brasil";
-    }catch(e){console.warn("Falha ao iniciar municípios nacionais",e);}
-  }
-  if(document.readyState==="loading"){
-    document.addEventListener("DOMContentLoaded",initNationalCities,{once:true});
-  }else{
-    initNationalCities();
-  }
-})();
-</script>
 
-<script id="v112-controller">
+
+
+
+
+<script id="v114-final-controller">
 (function(){
 "use strict";
 
-const CITY_BR = [
+const BR_CITIES=[
  ["SÃO PAULO / SP",1532],["RIO DE JANEIRO / RJ",624],["BELO HORIZONTE / MG",438],
  ["CURITIBA / PR",397],["PORTO ALEGRE / RS",326],["BRASÍLIA / DF",293],
  ["FORTALEZA / CE",241],["SALVADOR / BA",228],["RECIFE / PE",214],["CAMPINAS / SP",131]
 ];
+const fmt=v=>Number(v||0).toLocaleString("pt-BR");
 
-function nfmt(v){return Number(v||0).toLocaleString("pt-BR");}
-
-function paintCities(items,total){
- const box=document.getElementById("cityList");
- if(!box)return;
- const rows=Array.isArray(items)?items:[];
- const denom=Number(total)||16000;
- const max=Math.max(1,...rows.map(r=>Number(r[1])||0));
- box.innerHTML=rows.map((r,i)=>{
-   const v=Number(r[1])||0, pct=v/denom*100;
+function cities(items,total){
+ const box=document.getElementById("cityList"); if(!box)return;
+ const max=Math.max(1,...items.map(x=>+x[1]||0));
+ box.innerHTML=items.map((x,i)=>{
+   const v=+x[1]||0,p=v/total*100;
    return `<div class="city-row">
     <div class="city-rank">${i+1}</div>
-    <div class="city-main"><b>${r[0]}</b><div class="city-track"><div class="city-fill" style="width:${Math.max(2,v/max*100)}%"></div></div></div>
-    <strong>${nfmt(v)}</strong><span>${pct.toFixed(1).replace(".",",")}%</span>
+    <div class="city-main"><b>${x[0]}</b><div class="city-track"><div class="city-fill" style="width:${Math.max(2,v/max*100)}%"></div></div></div>
+    <strong>${fmt(v)}</strong><span>${p.toFixed(1).replace(".",",")}%</span>
    </div>`;
  }).join("");
 }
 
-function paintRank(){
- const rank=document.getElementById("rank");
- if(!rank || typeof stateData==="undefined")return;
- const rows=Object.entries(stateData).sort((a,b)=>b[1].total-a[1].total).slice(0,10);
- const max=rows[0]?.[1]?.total||1;
- rank.innerHTML=rows.map(([uf,d])=>`<button class="rank-row" type="button" data-rank-uf="${uf}">
-   <b>${uf}</b><i><em style="width:${d.total/max*100}%"></em></i><span>${nfmt(d.total)}</span>
- </button>`).join("");
- rank.querySelectorAll("[data-rank-uf]").forEach(b=>b.onclick=()=>choose(b.dataset.rankUf));
-}
-
-function choose(uf){
- document.querySelectorAll("#astrionBrazilMap .astrion-state").forEach(el=>el.classList.toggle("selected",!!uf&&el.dataset.uf===uf));
- document.querySelectorAll("[data-ufline]").forEach(el=>el.classList.toggle("selected",!!uf&&el.dataset.ufline===uf));
+function selectUF(uf){
+ document.querySelectorAll("#astrionBrazilMap .astrion-state").forEach(x=>x.classList.toggle("selected",!!uf&&x.dataset.uf===uf));
+ document.querySelectorAll(".uf-rank-line").forEach(x=>x.classList.toggle("selected",!!uf&&x.dataset.ufline===uf));
  const label=document.getElementById("stateLabel"), total=document.getElementById("stateTotal"),
        share=document.getElementById("stateShare"), title=document.getElementById("citiesTitle");
  if(!uf){
-   if(label)label.textContent="BRASIL";
-   if(total)total.textContent="16.000";
-   if(share)share.textContent="100% da rede potencial";
-   if(title)title.textContent="Principais municípios · Brasil";
-   paintCities(CITY_BR,16000);
-   paintRank();
-   paintUfRanking();
-   return;
+   label.textContent="BRASIL"; total.textContent="16.000"; share.textContent="100% da rede potencial";
+   title.textContent="Principais municípios · Brasil"; cities(BR_CITIES,16000); return;
  }
- if(typeof stateData==="undefined" || !stateData[uf])return;
- const d=stateData[uf];
- if(label)label.textContent=(typeof names!=="undefined"&&names[uf]?names[uf]:uf)+" · "+uf;
- if(total)total.textContent=nfmt(d.total);
- if(share)share.textContent=(d.total/16000*100).toFixed(1).replace(".",",")+"% da rede potencial";
- if(title)title.textContent="Principais municípios · "+uf;
- paintCities((d.cities||[]).map(x=>[x[0]+" / "+uf,x[1]]),d.total);
- if(typeof renderActivities==="function")try{renderActivities(d.activities)}catch(_){}
+ if(typeof stateData==="undefined"||!stateData[uf])return;
+ const d=stateData[uf], nm=(typeof names!=="undefined"&&names[uf])?names[uf]:uf;
+ label.textContent=nm.toUpperCase()+" · "+uf;
+ total.textContent=fmt(d.total);
+ share.textContent=(d.total/16000*100).toFixed(1).replace(".",",")+"% da rede potencial";
+ title.textContent="Principais municípios · "+uf;
+ cities((d.cities||[]).map(x=>[x[0]+" / "+uf,x[1]]),d.total);
+ if(typeof renderActivities==="function"){try{renderActivities(d.activities)}catch(e){}}
 }
 
-
-function paintUfRanking(){
- const box=document.getElementById("ufRanking");
- if(!box || typeof stateData==="undefined")return;
- const rows=Object.entries(stateData).sort((a,b)=>b[1].total-a[1].total).slice(0,10);
- const max=rows[0]?.[1]?.total||1;
- box.innerHTML=rows.map(([uf,d],i)=>{
-   const pct=d.total/16000*100;
-   return `<button type="button" class="uf-rank-line" data-ufline="${uf}">
-     <b>${uf}</b>
-     <div class="uf-rank-data">
-       <div class="uf-rank-track"><div class="uf-rank-fill" style="width:${d.total/max*100}%"></div></div>
-       <div class="uf-rank-values"><strong>${nfmt(d.total)}</strong><span>${pct.toFixed(1).replace(".",",")}%</span></div>
-     </div>
-   </button>`;
- }).join("");
- box.querySelectorAll("[data-ufline]").forEach(btn=>{
-   btn.onclick=function(e){e.preventDefault();e.stopPropagation();choose(this.dataset.ufline);return false;};
- });
-}
-
-function activateTab(id){
- document.querySelectorAll(".tab").forEach(t=>{
-   const active=t.id===id;
-   t.classList.toggle("active",active);
-   t.style.display=active?"block":"none";
- });
- document.querySelectorAll("[data-tab]").forEach(b=>b.classList.toggle("active",b.dataset.tab===id));
+function tab(id){
+ document.querySelectorAll(".tab").forEach(x=>{const a=x.id===id;x.classList.toggle("active",a);x.style.display=a?"block":"none"});
+ document.querySelectorAll("[data-tab]").forEach(x=>x.classList.toggle("active",x.dataset.tab===id));
  window.scrollTo({top:0,behavior:"smooth"});
- if(id==="b2b2c")setTimeout(()=>choose(null),0);
+ if(id==="b2b2c")setTimeout(()=>selectUF(null),0);
 }
 
-function boot(){
- // Tabs: direct binding, independent of all legacy handlers.
- document.querySelectorAll("[data-tab]").forEach(btn=>{
-   btn.onclick=function(e){e.preventDefault();e.stopImmediatePropagation();activateTab(this.dataset.tab);return false;};
+function bind(){
+ document.querySelectorAll("[data-tab]").forEach(x=>x.onclick=e=>{e.preventDefault();e.stopImmediatePropagation();tab(x.dataset.tab);return false});
+ document.querySelectorAll("#astrionBrazilMap .astrion-state").forEach(x=>{
+   x.onclick=e=>{e.preventDefault();e.stopImmediatePropagation();selectUF(x.dataset.uf);return false};
+   x.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();selectUF(x.dataset.uf)}};
  });
-
- // Map state interaction.
- document.querySelectorAll("#astrionBrazilMap .astrion-state").forEach(el=>{
-   el.onclick=function(e){e.preventDefault();e.stopImmediatePropagation();choose(this.dataset.uf);return false;};
- });
-
- // Reset.
+ document.querySelectorAll(".uf-rank-line").forEach(x=>x.onclick=e=>{e.preventDefault();e.stopImmediatePropagation();selectUF(x.dataset.ufline);return false});
  const reset=document.getElementById("resetMap");
- if(reset)reset.onclick=function(e){e.preventDefault();e.stopImmediatePropagation();choose(null);return false;};
-
- // Ensure initial tab and national municipalities are actually rendered.
+ if(reset)reset.onclick=e=>{e.preventDefault();e.stopImmediatePropagation();selectUF(null);return false};
+ cities(BR_CITIES,16000);
  const active=document.querySelector("[data-tab].active");
- activateTab(active?.dataset.tab || "consolidado");
- paintCities(CITY_BR,16000);
- paintRank();
- paintUfRanking();
+ tab(active?active.dataset.tab:"consolidado");
 }
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});
-else boot();
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();
 })();
 </script>
-
 </body></html>
